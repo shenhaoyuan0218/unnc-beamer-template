@@ -1,0 +1,116 @@
+% UNNC Beamer theme (layout inspired by the CUHK Overleaf Beamer template)
+\ProvidesPackage{beamerthemeUNNC}
+
+\RequirePackage{tikz}
+\usetikzlibrary{calc}
+\RequirePackage{graphicx}
+\IfFileExists{lato.sty}{\RequirePackage[default]{lato}}{\RequirePackage[scaled]{helvet}\renewcommand{\familydefault}{\sfdefault}}
+
+% ---------------- colours ----------------
+\definecolor{unncblue}{RGB}{16,38,59}     % Nottingham blue
+\definecolor{unncmid}{RGB}{0,90,150}
+\definecolor{unncgrey}{RGB}{110,120,130}
+\definecolor{unnclight}{RGB}{232,238,244}
+
+\setbeamercolor{normal text}{fg=black!85,bg=white}
+\setbeamercolor{structure}{fg=unncblue}
+\setbeamercolor{frametitle}{fg=unncblue}
+\setbeamercolor{framesubtitle}{fg=unncmid}
+\setbeamercolor{title}{fg=unncblue}
+\setbeamercolor{subtitle}{fg=unncmid}
+\setbeamercolor{item}{fg=unncblue}
+\setbeamercolor{block title}{fg=white,bg=unncblue}
+\setbeamercolor{block body}{fg=black!85,bg=unnclight}
+\setbeamercolor{alerted text}{fg=unncmid}
+\setbeamercolor{page number in head/foot}{fg=unncgrey}
+
+% ---------------- fonts ----------------
+\setbeamerfont{title}{size=\LARGE,series=\bfseries}
+\setbeamerfont{subtitle}{size=\normalsize}
+\setbeamerfont{frametitle}{size=\Large,series=\bfseries}
+\setbeamerfont{framesubtitle}{size=\scriptsize}
+\setbeamerfont{author}{size=\small,series=\bfseries}
+\setbeamerfont{date}{size=\small}
+
+% ---------------- misc ----------------
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{itemize items}{\raisebox{0.15ex}{\scriptsize$\blacktriangleright$}}
+\setbeamertemplate{enumerate items}[default]
+\setbeamertemplate{blocks}[rounded][shadow=false]
+\addtobeamertemplate{block begin}{}{\vspace{0.2em}}
+\addtobeamertemplate{block end}{\vspace{0.2em}}{}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{bibliography item}[text]
+\setbeamersize{text margin left=1.0cm,text margin right=1.0cm}
+
+% ---------------- extra title fields ----------------
+\makeatletter
+\def\@submitdate{}\def\@degree{}\def\@studentid{}\def\@supervisor{}
+\newcommand{\submitdate}[1]{\def\@submitdate{#1}\date{#1}}
+\newcommand{\degree}[1]{\def\@degree{#1}}
+\newcommand{\studentid}[1]{\def\@studentid{#1}}
+\newcommand{\supervisor}[1]{\def\@supervisor{#1}}
+
+% ---------------- footline: page number bottom-left ----------------
+\setbeamertemplate{footline}{%
+  \hspace*{1.0cm}{\usebeamercolor[fg]{page number in head/foot}\tiny\insertframenumber/\inserttotalframenumber}\vspace*{0.35cm}}
+
+% ---------------- frame title: crest box + title + section ----------------
+\setbeamertemplate{frametitle}{%
+  \vspace*{0.25cm}%
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[anchor=north west,inner sep=0pt] at ($(current page.north west)+(1.0cm,-0.35cm)$)
+      {\includegraphics[height=1.05cm]{figures/unnc_crest.png}};
+  \end{tikzpicture}%
+  \hspace*{1.25cm}\begin{minipage}[t]{0.82\paperwidth}
+    {\usebeamercolor[fg]{frametitle}\usebeamerfont{frametitle}\insertframetitle\par}
+    \vspace{0.05em}
+    {\usebeamercolor[fg]{framesubtitle}\usebeamerfont{framesubtitle}%
+      \ifx\insertframesubtitle\@empty
+        \ifnum\value{section}>0 \thesection\enspace\insertsectionhead\fi
+      \else\insertframesubtitle\fi\par}
+  \end{minipage}%
+  \vspace*{0.1cm}
+}
+
+% ---------------- title page: diagonal blue block + white logo ----------------
+\setbeamertemplate{title page}{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[unncblue] ($(current page.north east)+(-0.30\paperwidth,0)$)
+      -- (current page.north east) -- (current page.south east)
+      -- ($(current page.south east)+(-0.46\paperwidth,0)$) -- cycle;
+    \node[anchor=south east,inner sep=0pt] at ($(current page.south east)+(-0.6cm,0.6cm)$)
+      {\includegraphics[width=0.30\paperwidth]{figures/unnc_logo_white.png}};
+    \node[anchor=north west,inner sep=0pt] at ($(current page.north west)+(1.0cm,-0.8cm)$)
+      {\includegraphics[height=1.3cm]{figures/unnc_crest.png}};
+    \node[anchor=west,inner sep=0pt,text width=0.48\paperwidth,align=left]
+      at ($(current page.west)+(1.0cm,-0.35cm)$) {%
+      {\usebeamercolor[fg]{title}\usebeamerfont{title}\inserttitle\par}
+      \ifx\insertsubtitle\@empty\else
+        \vspace{0.2em}{\usebeamercolor[fg]{subtitle}\usebeamerfont{subtitle}\insertsubtitle\par}\fi
+      \vspace{0.8em}
+      {\usebeamerfont{author}\insertauthor\par}
+      {\small Student ID: \@studentid\par}
+      \vspace{0.4em}
+      {\small\color{unncgrey}\@degree\par}
+      {\small\color{unncgrey}Supervisor: \@supervisor\par}
+      \vspace{0.4em}
+      {\usebeamerfont{date}\insertdate\par}};
+  \end{tikzpicture}%
+}
+
+% ---------------- section page: full blue background ----------------
+\newcommand{\unncsectionpage}{%
+  {\setbeamercolor{background canvas}{bg=unncblue}
+   \setbeamercolor{frametitle}{fg=white}
+   \setbeamercolor{framesubtitle}{fg=white!75}
+   \setbeamercolor{page number in head/foot}{fg=white!70}
+   \setbeamertemplate{section in toc}{{\color{white}\raisebox{0.15ex}{\scriptsize$\blacktriangleright$}~\inserttocsection}}
+   \setbeamertemplate{section in toc shaded}{{\color{white!35!unncblue}\raisebox{0.15ex}{\scriptsize$\blacktriangleright$}~\inserttocsection}}
+   \begin{frame}{Table of Contents}
+     \vspace{0.6cm}
+     \setlength{\parskip}{0.9em}
+     \tableofcontents[currentsection,hideallsubsections]
+   \end{frame}}}
+\AtBeginSection[]{\unncsectionpage}
+\makeatother
