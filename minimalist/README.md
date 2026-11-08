@@ -71,8 +71,8 @@ xelatex main
 | --- | --- |
 | `main.tex` | 主文件：标题与作者占位、各节示例 |
 | `beamerthemeUNNC.sty` | UNNC 主题：诺丁汉蓝、顶栏导航、帧标题校徽、页脚 |
-| `figures/unnc_crest.png` | 校徽，放在帧标题右上 |
-| `figures/unnc_logo_full.png` | 彩色字标，放在封面下方 |
+| `figures/unnc_logo_full.pdf` | 封面字标矢量（官方 SVG 转 PDF）。同名 PNG 保留 |
+| `figures/unnc_crest.pdf` | 城堡方标矢量，与 `unnc_crest.png` 同一图形。帧标题小图标仍用 PNG |
 | `figures/unnc_logo_white.png` | 白色字标，随模板附带 |
 | `ref.bib` | 示例文献，样式 `apalike` |
 | `main.pdf` | 预编译全文 |
