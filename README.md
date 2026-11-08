@@ -1,47 +1,79 @@
-# Beamer 幻灯片模板
+# UNNC Beamer 模板
 
-根目录可直接用 pdfLaTeX 编译，画面为 16:9。主题文件是 `beamerthemeUNNC.sty`，版式改编自 UNNC Overleaf 论文模板（Yue Li，2017 年 6 月；Denis Stepanov，2020 年 6 月）。
+两套宁波诺丁汉大学（UNNC）Beamer，分开放在两个目录里。进入所选目录再编译。
 
-## 预览
+Two UNNC Beamer templates. Compile inside the directory you choose.
 
-完整 16 页：[main.pdf](main.pdf)
+| | [thesis-style](thesis-style/) | [minimalist](minimalist/) |
+| --- | --- | --- |
+| 编译器 | **pdfLaTeX** | **XeLaTeX** |
+| 语言 | 英文（有 Lato 时用 Lato，否则 Helvetica） | 中英文混排 |
+| 结构 | 论文式多文件：`preface/`、`body/`、`appendices/` | 单文件 `main.tex`，正文页带顶部小节导航 |
+| 全文 | [thesis-style/main.pdf](thesis-style/main.pdf)（16 页） | [minimalist/main.pdf](minimalist/main.pdf)（14 页） |
+| 说明 | [thesis-style/README.md](thesis-style/README.md) | [minimalist/README.md](minimalist/README.md) |
 
-封面（第 1 页）：
+Overleaf 使用 **New Project → Upload Project**，只上传所选的那一个文件夹。
 
-![封面](preview/cover.png)
+## Thesis-style（pdfLaTeX）
 
-节页（第 6 页，进入 Introduction 时的目录）：
+论文式幻灯片，16:9，版式改编自 UNNC Overleaf 论文模板。源文件在 [thesis-style/](thesis-style/)。
 
-![节页](preview/section.png)
+封面：
 
-正文（第 10 页，Method 中的 Key Idea）：
+![thesis-style 封面](thesis-style/preview/cover.png)
 
-![正文](preview/content.png)
+节页（进入 Introduction 时的目录）：
 
-## 修改内容
+![thesis-style 节页](thesis-style/preview/section.png)
 
-在 `main.tex` 中填写 `\title`、`\subtitle`、`\author`、`\submitdate`、`\degree`、`\studentid`、`\supervisor`。
+正文（Method 中的 Key Idea）：
 
-| 路径 | 内容 |
-| --- | --- |
-| `preface/` | 致谢、摘要、发表 |
-| `body/00_body.tex` | 按顺序引入各章 |
-| `body/` | 章节正文 |
-| `appendices/appendix.tex` | 附录 |
-| `bibliography/bibliography.bib` | 文献库，样式 `unsrt` |
-| `figures/unnc_crest.png` | 页眉与封面校徽 |
-| `figures/unnc_logo_white.png` | 封面白色标志 |
-| `figures/unnc_logo_full.png` | 随模板附带，当前源文件未引用 |
+![thesis-style 正文](thesis-style/preview/content.png)
 
-## 编译
-
-`main.tex` 注明使用 pdfLaTeX 与 BibTeX。在仓库根目录执行：
+在 `thesis-style/` 中执行：
 
 ```bash
+cd thesis-style
 pdflatex main
 bibtex main
 pdflatex main
 pdflatex main
 ```
 
-文献命令是 `\bibliography{bibliography/bibliography}`，BibTeX 需要在根目录运行。主题找到 `lato.sty` 时使用 Lato，否则使用 Helvetica（`helvet`）。随附的 [main.pdf](main.pdf) 由 pdfLaTeX 生成，正文为 Helvetica。`.gitignore` 忽略 aux、log、nav、snm、toc、out、vrb、bbl、blg 等编译中间文件。
+在 [thesis-style/main.tex](thesis-style/main.tex) 填写 `\title`、`\subtitle`、`\author`、`\submitdate`、`\degree`、`\studentid`、`\supervisor`。前言在 `preface/`，章节在 `body/`，附录在 `appendices/`，文献在 `bibliography/bibliography.bib`（样式 `unsrt`）。
+
+## Minimalist（XeLaTeX）
+
+极简 UNNC Beamer，支持中文，正文页顶部是分节导航。源文件在 [minimalist/](minimalist/)。
+
+封面（作者占位为 Your Name / 作者姓名）：
+
+![minimalist 封面](minimalist/previews/title.png)
+
+正文页（顶部小节导航，当前节高亮）：
+
+![minimalist 顶栏导航](minimalist/previews/topnav.png)
+
+中文示例：
+
+![minimalist 中文示例](minimalist/previews/chinese.png)
+
+在 `minimalist/` 中执行：
+
+```bash
+cd minimalist
+latexmk -xelatex main.tex
+```
+
+Overleaf 将 Compiler 设为 **XeLaTeX**，然后重新编译两次（第二遍刷新顶部导航、目录和文献引用）。手动编译时在中间运行一次 BibTeX：
+
+```bash
+xelatex main
+bibtex main
+xelatex main
+xelatex main
+```
+
+作者占位是 `Your Name / 作者姓名`，页脚短作者是 `Author`。标题、作者和 `\section` 都在 [minimalist/main.tex](minimalist/main.tex)，文献在 [minimalist/ref.bib](minimalist/ref.bib)。
+
+幻灯片结构改编自 [Minimalist PKU Beamer 2026](https://github.com/rexera/minimalist-pku-beamer-2026)（MIT）。标识、配色与 `beamerthemeUNNC.sty` 为 UNNC。

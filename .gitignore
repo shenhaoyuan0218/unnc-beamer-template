@@ -1,4 +1,4 @@
-# TeX build artifacts
+# LaTeX build artifacts. thesis-style/ and minimalist/ keep sources, figures, PDFs, and previews.
 *.aux
 *.bbl
 *.bcf
@@ -12,6 +12,7 @@
 *.out
 *.run.xml
 *.snm
+*.synctex
 *.synctex.gz
 *.synctex(busy)
 *.toc
