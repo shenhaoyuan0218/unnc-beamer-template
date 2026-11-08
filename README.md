@@ -1,47 +1,83 @@
-# Beamer 幻灯片模板
+# Minimalist UNNC Beamer
 
-根目录可直接用 pdfLaTeX 编译，画面为 16:9。主题文件是 `beamerthemeUNNC.sty`，版式改编自 UNNC Overleaf 论文模板（Yue Li，2017 年 6 月；Denis Stepanov，2020 年 6 月）。
+宁波诺丁汉大学（UNNC）风格的极简 Beamer，支持中文。
+
+A lightweight UNNC-style Beamer template with Chinese support.
 
 ## 预览
 
-完整 16 页：[main.pdf](main.pdf)
+完整 14 页：[main.pdf](main.pdf)
 
-封面（第 1 页）：
+封面（标题色块与 UNNC 字标）：
 
-![封面](preview/cover.png)
+![封面：Minimalist UNNC Beamer 标题页，作者占位为 Your Name / 作者姓名，下方为 UNNC 字标](previews/title.png)
 
-节页（第 6 页，进入 Introduction 时的目录）：
+正文页（顶部为分节导航，当前节高亮）：
 
-![节页](preview/section.png)
+![正文页：顶部 Introduction、Motivations、Methods、Simulation、References 导航，Motivations 为当前节](previews/topnav.png)
 
-正文（第 10 页，Method 中的 Key Idea）：
+中文示例：
 
-![正文](preview/content.png)
+![中文支持示例：宋体正文、伪斜体与中文定理](previews/chinese.png)
 
-## 修改内容
+## 快速开始
 
-在 `main.tex` 中填写 `\title`、`\subtitle`、`\author`、`\submitdate`、`\degree`、`\studentid`、`\supervisor`。
+编译器使用 **XeLaTeX**。pdfLaTeX 不能加载这里的中文字体。
 
-| 路径 | 内容 |
-| --- | --- |
-| `preface/` | 致谢、摘要、发表 |
-| `body/00_body.tex` | 按顺序引入各章 |
-| `body/` | 章节正文 |
-| `appendices/appendix.tex` | 附录 |
-| `bibliography/bibliography.bib` | 文献库，样式 `unsrt` |
-| `figures/unnc_crest.png` | 页眉与封面校徽 |
-| `figures/unnc_logo_white.png` | 封面白色标志 |
-| `figures/unnc_logo_full.png` | 随模板附带，当前源文件未引用 |
+**Overleaf**
 
-## 编译
+1. **New Project** → **Upload Project**，上传本仓库的 ZIP，或 clone 后上传整个文件夹。
+2. Menu → Compiler 选择 **XeLaTeX**，主文件为 `main.tex`。
+3. **重新编译两次**（第二遍刷新顶部导航、目录和文献引用。Overleaf 会在此过程中运行 BibTeX）。
 
-`main.tex` 注明使用 pdfLaTeX 与 BibTeX。在仓库根目录执行：
+**本地**
 
 ```bash
-pdflatex main
-bibtex main
-pdflatex main
-pdflatex main
+git clone https://github.com/shenhaoyuan0218/unnc-beamer-template.git
+cd unnc-beamer-template
+latexmk -xelatex main.tex
 ```
 
-文献命令是 `\bibliography{bibliography/bibliography}`，BibTeX 需要在根目录运行。主题找到 `lato.sty` 时使用 Lato，否则使用 Helvetica（`helvet`）。随附的 [main.pdf](main.pdf) 由 pdfLaTeX 生成，正文为 Helvetica。`.gitignore` 忽略 aux、log、nav、snm、toc、out、vrb、bbl、blg 等编译中间文件。
+`latexmk` 会按需运行 XeLaTeX 与 BibTeX。手动编译时同样编译两遍，并在中间跑一次 BibTeX：
+
+```bash
+xelatex main
+bibtex main
+xelatex main
+xelatex main
+```
+
+## 改哪里
+
+演示文稿里的作者是占位符 `Your Name / 作者姓名`，页脚短作者是 `Author`。换成自己的信息时，只改 `main.tex` 顶部：
+
+```latex
+\author[Author]{Your Name \; 作者姓名\\{\small\href{mailto:your.email@example.com}{\texttt{your.email@example.com}}}}
+\title[短标题]{演示标题}
+\subtitle{副标题}
+\institute{University of Nottingham Ningbo China \\ 宁波诺丁汉大学}
+\date{2026}
+```
+
+按 `\section{...}` 增删章节。每个非星号 section 会先插入一页目录，正文页顶部出现对应的分节标签。示例帧（中文、引用、公式、图文绕排、block、定理、表格）都可以直接替换。文献条目写在 `ref.bib`，正文用 `\citep` / `\citet`。
+
+主题另外提供 `\studentid{}`、`\degree{}`、`\supervisor{}`、`\submitdate{}`，当前封面没有使用这些字段。
+
+## 文件
+
+| 路径 | 作用 |
+| --- | --- |
+| `main.tex` | 主文件：标题与作者占位、各节示例 |
+| `beamerthemeUNNC.sty` | UNNC 主题：诺丁汉蓝、顶栏导航、帧标题校徽、页脚 |
+| `figures/unnc_crest.png` | 校徽，放在帧标题右上 |
+| `figures/unnc_logo_full.png` | 彩色字标，放在封面下方 |
+| `figures/unnc_logo_white.png` | 白色字标，随模板附带 |
+| `ref.bib` | 示例文献，样式 `apalike` |
+| `main.pdf` | 预编译全文 |
+| `previews/` | 本页用的封面、顶栏正文和中文页截图 |
+
+英文使用 XCharter。中文按顺序尝试 Songti SC、Noto Serif CJK SC、FandolSong（Overleaf 与 TeX Live 一般自带 FandolSong）。若本机装了 Maple Mono，等宽字体会用它，否则用默认字体。
+
+## 改编说明
+
+幻灯片结构改编自 [Minimalist PKU Beamer 2026](https://github.com/rexera/minimalist-pku-beamer-2026)（MIT）。标识、配色与 `beamerthemeUNNC.sty` 为宁波诺丁汉大学（UNNC）。

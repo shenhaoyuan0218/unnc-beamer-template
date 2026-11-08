@@ -1,4 +1,4 @@
-# TeX build artifacts
+# LaTeX build artifacts. Sources, figures/, main.pdf, and previews/ stay tracked.
 *.aux
 *.bbl
 *.bcf
@@ -12,6 +12,7 @@
 *.out
 *.run.xml
 *.snm
+*.synctex
 *.synctex.gz
 *.synctex(busy)
 *.toc

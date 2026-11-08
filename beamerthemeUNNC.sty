@@ -1,36 +1,62 @@
-% UNNC Beamer theme (layout inspired by the CUHK Overleaf Beamer template)
-\ProvidesPackage{beamerthemeUNNC}
+% Minimalist UNNC Beamer theme
+% Visual identity: UNNC (Nottingham blue / crest)
+% Top section navigation + academic chrome adapted from Minimalist PKU Beamer 2026 (MIT)
+\ProvidesPackage{beamerthemeUNNC}[2026/11/08 Minimalist UNNC Beamer]
 
 \RequirePackage{tikz}
 \usetikzlibrary{calc}
 \RequirePackage{graphicx}
-\IfFileExists{lato.sty}{\RequirePackage[default]{lato}}{\RequirePackage[scaled]{helvet}\renewcommand{\familydefault}{\sfdefault}}
+\RequirePackage{etoolbox}
 
 % ---------------- colours ----------------
 \definecolor{unncblue}{RGB}{16,38,59}     % Nottingham blue
 \definecolor{unncmid}{RGB}{0,90,150}
 \definecolor{unncgrey}{RGB}{110,120,130}
 \definecolor{unnclight}{RGB}{232,238,244}
+\definecolor{unncaccent}{RGB}{0,90,150}
 
 \setbeamercolor{normal text}{fg=black!85,bg=white}
 \setbeamercolor{structure}{fg=unncblue}
-\setbeamercolor{frametitle}{fg=unncblue}
+\setbeamercolor{frametitle}{fg=unncblue,bg=white}
 \setbeamercolor{framesubtitle}{fg=unncmid}
-\setbeamercolor{title}{fg=unncblue}
-\setbeamercolor{subtitle}{fg=unncmid}
+\setbeamercolor{title}{fg=white,bg=unncblue}
+\setbeamercolor{subtitle}{fg=white!90}
 \setbeamercolor{item}{fg=unncblue}
 \setbeamercolor{block title}{fg=white,bg=unncblue}
 \setbeamercolor{block body}{fg=black!85,bg=unnclight}
 \setbeamercolor{alerted text}{fg=unncmid}
-\setbeamercolor{page number in head/foot}{fg=unncgrey}
+\setbeamercolor{page number in head/foot}{fg=white}
+\setbeamercolor{author in head/foot}{fg=white,bg=unncblue}
+\setbeamercolor{title in head/foot}{fg=white,bg=unncblue}
+\setbeamercolor{frame number}{fg=white}
+\setbeamercolor{footline}{bg=unncblue}
+\setbeamercolor{fine separation line}{}
+\setbeamercolor{separation line}{}
+\setbeamercolor{upper separation line foot}{bg=unncblue}
+\setbeamercolor{lower separation line foot}{bg=unncblue}
+\setbeamercolor{section in head/foot}{bg=unncblue,fg=white}
+\setbeamercolor{section in head/foot shaded}{bg=unncblue,fg=white!55!unncblue}
+\setbeamercolor{palette primary}{fg=white,bg=unncblue}
+\setbeamercolor{palette secondary}{fg=white,bg=unncblue!95!black}
+\setbeamercolor{palette tertiary}{fg=white,bg=unncblue!90!black}
+\setbeamercolor{palette quaternary}{fg=white,bg=unncblue!85!black}
+\setbeamercolor{titlelike}{parent=palette primary}
 
 % ---------------- fonts ----------------
 \setbeamerfont{title}{size=\LARGE,series=\bfseries}
 \setbeamerfont{subtitle}{size=\normalsize}
-\setbeamerfont{frametitle}{size=\Large,series=\bfseries}
+\setbeamerfont{frametitle}{series=\bfseries,size=\large}
 \setbeamerfont{framesubtitle}{size=\scriptsize}
 \setbeamerfont{author}{size=\small,series=\bfseries}
 \setbeamerfont{date}{size=\small}
+\setbeamerfont{footline}{series=\bfseries,size=\tiny}
+\setbeamerfont{block title}{size=\small}
+\setbeamerfont{block title alerted}{size=\small}
+\setbeamerfont{block title example}{size=\small}
+
+% ---------------- outer: smoothbars section tabs (PKU-style) ----------------
+\useoutertheme[subsection=false]{smoothbars}
+\useinnertheme{circles}
 
 % ---------------- misc ----------------
 \setbeamertemplate{navigation symbols}{}
@@ -41,76 +67,119 @@
 \addtobeamertemplate{block end}{\vspace{0.2em}}{}
 \setbeamertemplate{caption}[numbered]
 \setbeamertemplate{bibliography item}[text]
-\setbeamersize{text margin left=1.0cm,text margin right=1.0cm}
+\setbeamersize{text margin left=0.9cm,text margin right=0.9cm}
 
-% ---------------- extra title fields ----------------
+\AtEndPreamble{\@ifpackageloaded{booktabs}{%
+  \setlength{\heavyrulewidth}{1.2pt}%
+  \setlength{\lightrulewidth}{0.5pt}%
+}{}}
+
 \makeatletter
+% ---------------- extra title fields ----------------
 \def\@submitdate{}\def\@degree{}\def\@studentid{}\def\@supervisor{}
 \newcommand{\submitdate}[1]{\def\@submitdate{#1}\date{#1}}
 \newcommand{\degree}[1]{\def\@degree{#1}}
 \newcommand{\studentid}[1]{\def\@studentid{#1}}
 \newcommand{\supervisor}[1]{\def\@supervisor{#1}}
 
-% ---------------- footline: page number bottom-left ----------------
+% ---------------- footline ----------------
+\newcommand{\frameofframes}{/}
+\newcommand{\setframeofframes}[1]{\renewcommand{\frameofframes}{#1}}
 \setbeamertemplate{footline}{%
-  \hspace*{1.0cm}{\usebeamercolor[fg]{page number in head/foot}\tiny\insertframenumber/\inserttotalframenumber}\vspace*{0.35cm}}
+  \begin{beamercolorbox}[colsep=1.5pt]{upper separation line foot}
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[ht=2.5ex,dp=1ex,%
+    leftskip=.3cm,rightskip=.3cm plus1fil]{author in head/foot}%
+    {\usebeamerfont{author in head/foot}\insertshortauthor}%
+    \hfill%
+    {\usebeamerfont{title in head/foot}\insertshorttitle}%
+    \hfill%
+    {\usebeamerfont{frame number}\usebeamercolor[fg]{frame number}%
+      \insertframenumber~\frameofframes~\inserttotalframenumber}%
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[colsep=1.5pt]{lower separation line foot}
+  \end{beamercolorbox}%
+}
 
-% ---------------- frame title: crest box + title + section ----------------
+% ---------------- fixed-height top nav bar (smoothbars patch, PKU-style) ----------------
+\newlength{\unnc@headheight}
+\newlength{\unnc@titleht}
+\newlength{\unnc@titledp}
+\newlength{\unnc@logoheight}
+\newlength{\unnc@logowidth}
+\newlength{\unnc@logoyshift}
+\AtBeginDocument{\global\unnc@headheight=11.6pt}
+\setbeamertemplate{headline}{%
+  \begin{beamercolorbox}[wd=\paperwidth,colsep=0pt,ht=\unnc@headheight,dp=0ex,vmode]{section in head/foot}%
+    \vbox to \unnc@headheight{%
+      {\vskip0.52pt}%
+      \insertnavigation{\paperwidth}%
+      \vss}%
+  \end{beamercolorbox}%
+}
+
+% ---------------- frametitle + crest top-right (aligned to title ink, below nav) ----------------
 \setbeamertemplate{frametitle}{%
-  \vspace*{0.25cm}%
+  \nointerlineskip
+  \usebeamerfont*{frametitle}%
+  \settoheight{\unnc@titleht}{\insertframetitle}%
+  \settodepth{\unnc@titledp}{\insertframetitle}%
+  \unnc@logoheight=\dimexpr\unnc@titleht+\unnc@titledp\relax
+  \settowidth{\unnc@logowidth}{\includegraphics[height=\unnc@logoheight]{figures/unnc_crest.png}}%
+  \begin{beamercolorbox}[wd=\paperwidth,sep=0.3cm,%
+    rightskip=\dimexpr\unnc@logowidth+0.4cm\relax]{frametitle}%
+    \strut\insertframetitle
+    \ifx\insertframesubtitle\@empty\else
+      \par{\usebeamerfont*{framesubtitle}\usebeamercolor[fg]{framesubtitle}\strut\insertframesubtitle}%
+    \fi
+  \end{beamercolorbox}%
+  \nointerlineskip
+  \unnc@logoyshift=\unnc@headheight
+  \addtolength{\unnc@logoyshift}{0.3cm}%
+  \addtolength{\unnc@logoyshift}{\ht\strutbox}%
+  \addtolength{\unnc@logoyshift}{-\unnc@titleht}%
   \begin{tikzpicture}[remember picture,overlay]
-    \node[anchor=north west,inner sep=0pt] at ($(current page.north west)+(1.0cm,-0.35cm)$)
-      {\includegraphics[height=1.05cm]{figures/unnc_crest.png}};
-  \end{tikzpicture}%
-  \hspace*{1.25cm}\begin{minipage}[t]{0.82\paperwidth}
-    {\usebeamercolor[fg]{frametitle}\usebeamerfont{frametitle}\insertframetitle\par}
-    \vspace{0.05em}
-    {\usebeamercolor[fg]{framesubtitle}\usebeamerfont{framesubtitle}%
-      \ifx\insertframesubtitle\@empty
-        \ifnum\value{section}>0 \thesection\enspace\insertsectionhead\fi
-      \else\insertframesubtitle\fi\par}
-  \end{minipage}%
-  \vspace*{0.1cm}
-}
-
-% ---------------- title page: diagonal blue block + white logo ----------------
-\setbeamertemplate{title page}{%
-  \begin{tikzpicture}[remember picture,overlay]
-    \fill[unncblue] ($(current page.north east)+(-0.30\paperwidth,0)$)
-      -- (current page.north east) -- (current page.south east)
-      -- ($(current page.south east)+(-0.46\paperwidth,0)$) -- cycle;
-    \node[anchor=south east,inner sep=0pt] at ($(current page.south east)+(-0.6cm,0.6cm)$)
-      {\includegraphics[width=0.30\paperwidth]{figures/unnc_logo_white.png}};
-    \node[anchor=north west,inner sep=0pt] at ($(current page.north west)+(1.0cm,-0.8cm)$)
-      {\includegraphics[height=1.3cm]{figures/unnc_crest.png}};
-    \node[anchor=west,inner sep=0pt,text width=0.48\paperwidth,align=left]
-      at ($(current page.west)+(1.0cm,-0.35cm)$) {%
-      {\usebeamercolor[fg]{title}\usebeamerfont{title}\inserttitle\par}
-      \ifx\insertsubtitle\@empty\else
-        \vspace{0.2em}{\usebeamercolor[fg]{subtitle}\usebeamerfont{subtitle}\insertsubtitle\par}\fi
-      \vspace{0.8em}
-      {\usebeamerfont{author}\insertauthor\par}
-      {\small Student ID: \@studentid\par}
-      \vspace{0.4em}
-      {\small\color{unncgrey}\@degree\par}
-      {\small\color{unncgrey}Supervisor: \@supervisor\par}
-      \vspace{0.4em}
-      {\usebeamerfont{date}\insertdate\par}};
+    \node[anchor=north east,inner sep=0pt]
+      at ([yshift=-\unnc@logoyshift,xshift=-0.3cm]current page.north east)
+      {\includegraphics[height=\unnc@logoheight]{figures/unnc_crest.png}};
   \end{tikzpicture}%
 }
 
-% ---------------- section page: full blue background ----------------
-\newcommand{\unncsectionpage}{%
-  {\setbeamercolor{background canvas}{bg=unncblue}
-   \setbeamercolor{frametitle}{fg=white}
-   \setbeamercolor{framesubtitle}{fg=white!75}
-   \setbeamercolor{page number in head/foot}{fg=white!70}
-   \setbeamertemplate{section in toc}{{\color{white}\raisebox{0.15ex}{\scriptsize$\blacktriangleright$}~\inserttocsection}}
-   \setbeamertemplate{section in toc shaded}{{\color{white!35!unncblue}\raisebox{0.15ex}{\scriptsize$\blacktriangleright$}~\inserttocsection}}
-   \begin{frame}{Table of Contents}
-     \vspace{0.6cm}
-     \setlength{\parskip}{0.9em}
-     \tableofcontents[currentsection,hideallsubsections]
-   \end{frame}}}
-\AtBeginSection[]{\unncsectionpage}
+% ---------------- title page: use default Beamer titlepage (PKU-style)
+% Colour via title bg=unncblue above; logo is placed in main.tex under \titlepage.
+% (Do not redefine title page template — keeps centered classic layout.)
+
+% ---------------- section page: shaded TOC (PKU-style; top nav still visible) ----------------
+\AtBeginSection[]{%
+  \begin{frame}
+    \tableofcontents[sectionstyle=show/shaded,subsectionstyle=hide,subsubsectionstyle=hide]
+  \end{frame}%
+}
+
+% ---------------- theorem / definition / proposition block colours ----------------
+\BeforeBeginEnvironment{definition}{%
+  \setbeamercolor{block title}{fg=white,bg=unncblue}%
+  \setbeamercolor{block body}{fg=black!85,bg=unnclight}%
+}
+\AfterEndEnvironment{definition}{%
+  \setbeamercolor{block title}{fg=white,bg=unncblue}%
+  \setbeamercolor{block body}{fg=black!85,bg=unnclight}%
+}
+\BeforeBeginEnvironment{theorem}{%
+  \setbeamercolor{block title}{fg=white,bg=unncmid}%
+  \setbeamercolor{block body}{fg=black!85,bg=unncmid!10}%
+}
+\AfterEndEnvironment{theorem}{%
+  \setbeamercolor{block title}{fg=white,bg=unncblue}%
+  \setbeamercolor{block body}{fg=black!85,bg=unnclight}%
+}
+\BeforeBeginEnvironment{proposition}{%
+  \setbeamercolor{block title}{fg=white,bg=unncmid}%
+  \setbeamercolor{block body}{fg=black!85,bg=unncmid!10}%
+}
+\AfterEndEnvironment{proposition}{%
+  \setbeamercolor{block title}{fg=white,bg=unncblue}%
+  \setbeamercolor{block body}{fg=black!85,bg=unnclight}%
+}
+
 \makeatother
