@@ -46,9 +46,9 @@ pdflatex main
 
 极简 UNNC Beamer，支持中文，正文页顶部是分节导航。源文件在 [minimalist/](minimalist/)。
 
-封面（作者占位为 Your Name / 作者姓名）：
+封面（矢量 UNNC 字标，与页脚留有间距；作者占位为 Your Name / 作者姓名）：
 
-![minimalist 封面](minimalist/previews/title.png)
+![minimalist 封面：矢量 UNNC 字标，城堡方标边缘清晰，与页脚留有间距](minimalist/previews/title.png)
 
 正文页（顶部小节导航，当前节高亮）：
 

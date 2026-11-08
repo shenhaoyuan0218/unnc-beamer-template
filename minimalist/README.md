@@ -10,9 +10,9 @@ A lightweight UNNC-style Beamer template with Chinese support.
 
 完整 14 页：[main.pdf](main.pdf)
 
-封面（标题色块与 UNNC 字标）：
+封面（矢量 UNNC 字标，与页脚留有间距）：
 
-![封面：Minimalist UNNC Beamer 标题页，作者占位为 Your Name / 作者姓名，下方为 UNNC 字标](previews/title.png)
+![封面：矢量 UNNC 字标，作者占位为 Your Name / 作者姓名，城堡方标清晰且与页脚留有间距](previews/title.png)
 
 正文页（顶部为分节导航，当前节高亮）：
 
