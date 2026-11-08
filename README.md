@@ -1,44 +1,71 @@
-# Minimalist UNNC Beamer
+# UNNC Beamer 模板
 
-宁波诺丁汉大学（UNNC）风格的极简 Beamer，支持中文。
+两套宁波诺丁汉大学（UNNC）Beamer，分开放在两个目录里。进入所选目录再编译。
 
-A lightweight UNNC-style Beamer template with Chinese support.
+Two UNNC Beamer templates. Compile inside the directory you choose.
 
-## 预览
+| | [thesis-style](thesis-style/) | [minimalist](minimalist/) |
+| --- | --- | --- |
+| 编译器 | **pdfLaTeX** | **XeLaTeX** |
+| 语言 | 英文（有 Lato 时用 Lato，否则 Helvetica） | 中英文混排 |
+| 结构 | 论文式多文件：`preface/`、`body/`、`appendices/` | 单文件 `main.tex`，正文页带顶部小节导航 |
+| 全文 | [thesis-style/main.pdf](thesis-style/main.pdf)（16 页） | [minimalist/main.pdf](minimalist/main.pdf)（14 页） |
+| 说明 | [thesis-style/README.md](thesis-style/README.md) | [minimalist/README.md](minimalist/README.md) |
 
-完整 14 页：[main.pdf](main.pdf)
+Overleaf 使用 **New Project → Upload Project**，只上传所选的那一个文件夹。
 
-封面（标题色块与 UNNC 字标）：
+## Thesis-style（pdfLaTeX）
 
-![封面：Minimalist UNNC Beamer 标题页，作者占位为 Your Name / 作者姓名，下方为 UNNC 字标](previews/title.png)
+论文式幻灯片，16:9，版式改编自 UNNC Overleaf 论文模板。源文件在 [thesis-style/](thesis-style/)。
 
-正文页（顶部为分节导航，当前节高亮）：
+封面：
 
-![正文页：顶部 Introduction、Motivations、Methods、Simulation、References 导航，Motivations 为当前节](previews/topnav.png)
+![thesis-style 封面](thesis-style/preview/cover.png)
+
+节页（进入 Introduction 时的目录）：
+
+![thesis-style 节页](thesis-style/preview/section.png)
+
+正文（Method 中的 Key Idea）：
+
+![thesis-style 正文](thesis-style/preview/content.png)
+
+在 `thesis-style/` 中执行：
+
+```bash
+cd thesis-style
+pdflatex main
+bibtex main
+pdflatex main
+pdflatex main
+```
+
+在 [thesis-style/main.tex](thesis-style/main.tex) 填写 `\title`、`\subtitle`、`\author`、`\submitdate`、`\degree`、`\studentid`、`\supervisor`。前言在 `preface/`，章节在 `body/`，附录在 `appendices/`，文献在 `bibliography/bibliography.bib`（样式 `unsrt`）。
+
+## Minimalist（XeLaTeX）
+
+极简 UNNC Beamer，支持中文，正文页顶部是分节导航。源文件在 [minimalist/](minimalist/)。
+
+封面（作者占位为 Your Name / 作者姓名）：
+
+![minimalist 封面](minimalist/previews/title.png)
+
+正文页（顶部小节导航，当前节高亮）：
+
+![minimalist 顶栏导航](minimalist/previews/topnav.png)
 
 中文示例：
 
-![中文支持示例：宋体正文、伪斜体与中文定理](previews/chinese.png)
+![minimalist 中文示例](minimalist/previews/chinese.png)
 
-## 快速开始
-
-编译器使用 **XeLaTeX**。pdfLaTeX 不能加载这里的中文字体。
-
-**Overleaf**
-
-1. **New Project** → **Upload Project**，上传本仓库的 ZIP，或 clone 后上传整个文件夹。
-2. Menu → Compiler 选择 **XeLaTeX**，主文件为 `main.tex`。
-3. **重新编译两次**（第二遍刷新顶部导航、目录和文献引用。Overleaf 会在此过程中运行 BibTeX）。
-
-**本地**
+在 `minimalist/` 中执行：
 
 ```bash
-git clone https://github.com/shenhaoyuan0218/unnc-beamer-template.git
-cd unnc-beamer-template
+cd minimalist
 latexmk -xelatex main.tex
 ```
 
-`latexmk` 会按需运行 XeLaTeX 与 BibTeX。手动编译时同样编译两遍，并在中间跑一次 BibTeX：
+Overleaf 将 Compiler 设为 **XeLaTeX**，然后重新编译两次（第二遍刷新顶部导航、目录和文献引用）。手动编译时在中间运行一次 BibTeX：
 
 ```bash
 xelatex main
@@ -47,37 +74,6 @@ xelatex main
 xelatex main
 ```
 
-## 改哪里
+作者占位是 `Your Name / 作者姓名`，页脚短作者是 `Author`。标题、作者和 `\section` 都在 [minimalist/main.tex](minimalist/main.tex)，文献在 [minimalist/ref.bib](minimalist/ref.bib)。
 
-演示文稿里的作者是占位符 `Your Name / 作者姓名`，页脚短作者是 `Author`。换成自己的信息时，只改 `main.tex` 顶部：
-
-```latex
-\author[Author]{Your Name \; 作者姓名\\{\small\href{mailto:your.email@example.com}{\texttt{your.email@example.com}}}}
-\title[短标题]{演示标题}
-\subtitle{副标题}
-\institute{University of Nottingham Ningbo China \\ 宁波诺丁汉大学}
-\date{2026}
-```
-
-按 `\section{...}` 增删章节。每个非星号 section 会先插入一页目录，正文页顶部出现对应的分节标签。示例帧（中文、引用、公式、图文绕排、block、定理、表格）都可以直接替换。文献条目写在 `ref.bib`，正文用 `\citep` / `\citet`。
-
-主题另外提供 `\studentid{}`、`\degree{}`、`\supervisor{}`、`\submitdate{}`，当前封面没有使用这些字段。
-
-## 文件
-
-| 路径 | 作用 |
-| --- | --- |
-| `main.tex` | 主文件：标题与作者占位、各节示例 |
-| `beamerthemeUNNC.sty` | UNNC 主题：诺丁汉蓝、顶栏导航、帧标题校徽、页脚 |
-| `figures/unnc_crest.png` | 校徽，放在帧标题右上 |
-| `figures/unnc_logo_full.png` | 彩色字标，放在封面下方 |
-| `figures/unnc_logo_white.png` | 白色字标，随模板附带 |
-| `ref.bib` | 示例文献，样式 `apalike` |
-| `main.pdf` | 预编译全文 |
-| `previews/` | 本页用的封面、顶栏正文和中文页截图 |
-
-英文使用 XCharter。中文按顺序尝试 Songti SC、Noto Serif CJK SC、FandolSong（Overleaf 与 TeX Live 一般自带 FandolSong）。若本机装了 Maple Mono，等宽字体会用它，否则用默认字体。
-
-## 改编说明
-
-幻灯片结构改编自 [Minimalist PKU Beamer 2026](https://github.com/rexera/minimalist-pku-beamer-2026)（MIT）。标识、配色与 `beamerthemeUNNC.sty` 为宁波诺丁汉大学（UNNC）。
+幻灯片结构改编自 [Minimalist PKU Beamer 2026](https://github.com/rexera/minimalist-pku-beamer-2026)（MIT）。标识、配色与 `beamerthemeUNNC.sty` 为 UNNC。

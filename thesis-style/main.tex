@@ -1,0 +1,57 @@
+% Beamer version adapted from the UNNC Overleaf thesis template
+% (original by Yue Li, June 2017; modified by Denis Stepanov, June 2020)
+% Compile with pdfLaTeX (+ BibTeX)
+
+\documentclass[aspectratio=169,11pt]{beamer}
+
+% theme (beamerthemeUNNC.sty) + packages
+\usetheme{UNNC}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs,array,listings}
+\lstset{basicstyle=\ttfamily\footnotesize, columns=fullflexible, keepspaces=true}
+
+% ---------- title-page information (same fields as the thesis template) ----------
+\title{NAME OF YOUR PROJECT/DISSERTATION}
+\subtitle{Subtitle}
+\author{AUTHOR NAME}
+\submitdate{DATE}
+\degree{DEGREE NAME}
+\studentid{STUDENT ID}
+\supervisor{SUPERVISOR NAME}
+\institute{University of Nottingham Ningbo China}
+
+\begin{document}
+
+% title page
+\begin{frame}
+  \titlepage
+\end{frame}
+
+% preface material
+\input{preface/acknowledgements}
+\input{preface/abstract}
+\input{preface/publications}
+
+% outline
+\begin{frame}{Outline}
+  \setlength{\parskip}{0.8em}
+  \tableofcontents[hideallsubsections]
+\end{frame}
+
+% include all your "body" files
+\input{body/00_body}
+
+% bibliography
+\begin{frame}[allowframebreaks]{References}
+  \scriptsize
+  \bibliographystyle{unsrt}
+  \bibliography{bibliography/bibliography}
+\end{frame}
+
+% appendices
+\appendix
+\input{appendices/appendix}
+
+\end{document}

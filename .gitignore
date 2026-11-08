@@ -1,4 +1,4 @@
-# LaTeX build artifacts. Sources, figures/, main.pdf, and previews/ stay tracked.
+# LaTeX build artifacts. thesis-style/ and minimalist/ keep sources, figures, PDFs, and previews.
 *.aux
 *.bbl
 *.bcf
